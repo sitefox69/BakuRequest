@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BakuRequest — Widz</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0d0d0f;
+            --panel: #151518;
+            --panel-soft: #1b1b1f;
+            --border: #2a2a30;
+            --border-soft: #242429;
+            --text: #f1f1f1;
+            --text-soft: #b9b9c2;
+            --muted: #777780;
+            --accent: #9147ff;
+            --accent-hover: #772ce8;
+            --success: #48d848;
+            --radius: 14px;
+        }
+
+        html {
+            min-height: 100%;
+            background: var(--bg);
+        }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            min-height: 100vh;
+
+            color: var(--text);
+            background: var(--bg);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .app {
+            min-height: 100vh;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            height: 64px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 24px;
+
+            background: rgba(13, 13, 15, 0.96);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            color: #ffffff;
+
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .viewer-label {
+            color: var(--muted);
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .content {
+            width: 100%;
+            max-width: 1500px;
+
+            margin: 0 auto;
+
+            padding: 24px;
+        }
+
+        .viewer-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(360px, 0.9fr)
+                minmax(0, 1.4fr);
+
+            gap: 20px;
+
+            align-items: stretch;
+        }
+
+        .left-column {
+            min-width: 0;
+        }
+
+        .right-column {
+            min-width: 0;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 20px;
+        }
+
+        .card {
+            min-width: 0;
+
+            padding: 20px;
+
+            background: var(--panel);
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .card h2 {
+            margin: 0;
+
+            color: var(--text);
+
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-bottom: 16px;
+        }
+
+        .queue-card {
+            height: 100%;
+            min-height: 100%;
+        }
+
+        .queue-count {
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .queue-list {
+            display: block;
+        }
+
+        .queue-item {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 12px 0;
+
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .queue-item:last-child {
+            border-bottom: 0;
+        }
+
+        .queue-number {
+            width: 32px;
+
+            flex: 0 0 32px;
+
+            color: var(--muted);
+
+            text-align: center;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .queue-thumb {
+            width: 42px;
+            height: 42px;
+
+            flex: 0 0 42px;
+
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #ffd95b;
+            background: #332b1f;
+
+            border-radius: 7px;
+        }
+
+        .queue-thumb img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+        .queue-info {
+            min-width: 0;
+
+            flex: 1;
+        }
+
+        .queue-title {
+            color: var(--text);
+
+            font-size: 14px;
+            font-weight: 600;
+
+            overflow-wrap: anywhere;
+        }
+
+        .queue-artist {
+            margin-top: 2px;
+
+            color: var(--text-soft);
+
+            font-size: 11px;
+        }
+
+        .queue-added-by {
+            margin-top: 2px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .queue-footer {
+            margin-top: 14px;
+            padding-top: 14px;
+
+            color: var(--muted);
+
+            border-top: 1px solid var(--border-soft);
+
+            text-align: center;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .player {
+            display: grid;
+
+            grid-template-columns:
+                150px
+                minmax(0, 1fr);
+
+            gap: 18px;
+
+            align-items: center;
+        }
+
+        .cover {
+            position: relative;
+
+            width: 150px;
+            height: 150px;
+
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #ffd95b;
+            background:
+                linear-gradient(
+                    135deg,
+                    #b3475b,
+                    #6f2842
+                );
+
+            border-radius: 10px;
+
+            font-size: 38px;
+        }
+
+        .cover img {
+            position: absolute;
+            inset: 0;
+
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+        .song-info {
+            min-width: 0;
+        }
+
+        .song-info h1 {
+            margin: 0 0 7px;
+
+            color: var(--text);
+
+            font-size: 25px;
+            font-weight: 700;
+            line-height: 1.18;
+
+            overflow-wrap: anywhere;
+        }
+
+        .song-info p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+        .song-info p strong {
+            color: var(--text-soft);
+        }
+
+        .progress {
+            width: 100%;
+            height: 6px;
+
+            margin: 24px 0 8px;
+
+            overflow: hidden;
+
+            background: #29292e;
+
+            border-radius: 999px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+
+            background: var(--accent);
+
+            border-radius: inherit;
+
+            transition: width 0.2s linear;
+        }
+
+        .time {
+            display: flex;
+            justify-content: space-between;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            font-variant-numeric: tabular-nums;
+        }
+
+        .voteskip-box {
+            padding: 15px;
+
+            background: #1d1d21;
+
+            border: 1px solid #2c2c31;
+            border-radius: 10px;
+        }
+
+        .voteskip-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+        .voteskip-status {
+            color: var(--text-soft);
+
+            font-size: 12px;
+        }
+
+        .voteskip-count {
+            color: #ffffff;
+
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .voteskip-count span {
+            color: var(--accent);
+        }
+
+        .voteskip-command {
+            margin-top: 10px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .voteskip-command code {
+            color: #b58aff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .my-songs-description {
+            margin: -4px 0 14px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .input {
+            width: 100%;
+            min-height: 42px;
+
+            padding: 0 12px;
+
+            color: var(--text);
+            background: #0f0f11;
+
+            border: 1px solid #303037;
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 12px;
+        }
+
+        .input:focus {
+            border-color: var(--accent);
+        }
+
+        .input::placeholder {
+            color: #66666d;
+        }
+
+        .my-songs-list {
+            margin-top: 12px;
+        }
+
+        .my-song-item {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 11px 0;
+
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .my-song-item:last-child {
+            border-bottom: 0;
+        }
+
+        .my-song-position {
+            min-width: 36px;
+
+            color: var(--accent);
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .my-song-info {
+            min-width: 0;
+
+            flex: 1;
+        }
+
+        .my-song-title {
+            color: var(--text);
+
+            font-size: 13px;
+            font-weight: 600;
+
+            overflow-wrap: anywhere;
+        }
+
+        .my-song-wait {
+            margin-top: 2px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .command {
+            display: flex;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 12px 0;
+
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .command:last-child {
+            border-bottom: 0;
+        }
+
+        .command code {
+            color: #b58aff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .command span {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            text-align: right;
+        }
+
+        .empty {
+            padding: 25px 10px;
+
+            color: var(--muted);
+
+            text-align: center;
+
+            font-size: 12px;
+        }
+
+        @media (max-width: 950px) {
+            .viewer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .right-column {
+                order: 1;
+            }
+
+            .left-column {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                height: 56px;
+
+                padding: 0 14px;
+            }
+
+            .logo {
+                font-size: 17px;
+            }
+
+            .viewer-label {
+                font-size: 10px;
+            }
+
+            .content {
+                padding: 14px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .player {
+                grid-template-columns: 1fr;
+            }
+
+            .cover {
+                width: 100%;
+                height: 180px;
+            }
+
+            .song-info h1 {
+                font-size: 21px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #34343a;
+
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #484850;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <header class="topbar">
+        <a href="/" class="logo">
+            Baku<span>Request</span>
+        </a>
+
+        <div class="viewer-label">
+            PANEL WIDZA
+        </div>
+    </header>
+
+    <main class="content">
+
+        <div class="viewer-grid">
+
+            <div class="left-column">
+
+                <section class="card queue-card">
+                    <div class="card-title">
+                        <h2>Kolejka</h2>
+
+                        <span
+                            id="queue-count"
+                            class="queue-count"
+                        >
+                            0 utworów
+                        </span>
+                    </div>
+
+                    <div
+                        id="queue-list"
+                        class="queue-list"
+                    >
+                        <div class="empty">
+                            Kolejka jest pusta.
+                        </div>
+                    </div>
+
+                    <div class="queue-footer">
+                        Kolejka aktualizuje się automatycznie.
+                        Pozycja #1 zostanie odtworzona jako następna.
+                    </div>
+                </section>
+
+            </div>
+
+            <div class="right-column">
+
+                <section class="card">
+                    <h2 style="margin-bottom: 16px;">
+                        Aktualnie odtwarzane
+                    </h2>
+
+                    <div class="player">
+
+                        <div class="cover">
+                            ♪
+
+                            <img
+                                id="player-thumbnail"
+                                src=""
+                                alt=""
+                                style="display:none;"
+                            >
+                        </div>
+
+                        <div class="song-info">
+
+                            <h1 id="player-title">
+                                Brak utworu
+                            </h1>
+
+                            <p>
+                                Dodane przez:
+                                <strong id="player-added-by">
+                                    —
+                                </strong>
+                            </p>
+
+                            <div class="progress">
+                                <div
+                                    id="player-progress-bar"
+                                    class="progress-bar"
+                                ></div>
+                            </div>
+
+                            <div class="time">
+                                <span id="player-current-time">
+                                    0:00
+                                </span>
+
+                                <span id="player-duration">
+                                    0:00
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2 style="margin-bottom: 16px;">
+                        Vote Skip
+                    </h2>
+
+                    <div class="voteskip-box">
+
+                        <div class="voteskip-top">
+
+                            <div class="voteskip-status">
+                                Aktualne głosy
+                            </div>
+
+                            <div class="voteskip-count">
+                                <span id="voteskip-count">0</span>
+                                /
+                                <span id="voteskip-required">0</span>
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="voteskip-state"
+                            class="voteskip-command"
+                        >
+                            Wpisz
+                            <code>!voteskip</code>
+                            na czacie, aby zagłosować za pominięciem utworu.
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2 style="margin-bottom: 10px;">
+                        Moje utwory
+                    </h2>
+
+                    <p class="my-songs-description">
+                        Wpisz swój nick z Twitcha, aby zobaczyć
+                        swoje utwory w kolejce.
+                    </p>
+
+                    <input
+                        id="viewer-username"
+                        class="input"
+                        type="text"
+                        placeholder="Twój nick Twitch..."
+                        autocomplete="off"
+                    >
+
+                    <div
+                        id="my-songs-list"
+                        class="my-songs-list"
+                    >
+                        <div class="empty">
+                            Wpisz swój nick powyżej.
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2 style="margin-bottom: 4px;">
+                        Komendy
+                    </h2>
+
+                    <div class="command">
+                        <code>!sr &lt;nazwa/link&gt;</code>
+                        <span>
+                            Dodaj utwór do kolejki
+                        </span>
+                    </div>
+
+                    <div class="command">
+                        <code>!ws</code>
+                        <span>
+                            Usuń swój ostatni utwór z kolejki
+                        </span>
+                    </div>
+
+                    <div class="command">
+                        <code>!song</code>
+                        <span>
+                            Sprawdź aktualny utwór
+                        </span>
+                    </div>
+
+                    <div class="command">
+                        <code>!voteskip</code>
+                        <span>
+                            Zagłosuj za pominięciem
+                        </span>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+    const state = {
+        queue: [],
+
+        player: {
+            song: null,
+            position: 0,
+            duration: 0,
+            playing: false,
+            paused: false,
+
+            syncedPosition: 0,
+            syncedAt: 0
+        }
+    };
+
+
+    function formatTime(seconds) {
+        const value = Number(seconds);
+
+        if (!Number.isFinite(value) || value < 0) {
+            return "0:00";
+        }
+
+        const total = Math.floor(value);
+        const minutes = Math.floor(total / 60);
+        const remaining = total % 60;
+
+        return (
+            String(minutes)
+            + ":"
+            + String(remaining).padStart(2, "0")
+        );
+    }
+
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+
+    function normalizeUsername(value) {
+        return String(value || "")
+            .trim()
+            .toLowerCase();
+    }
+
+
+    function getThumbnail(song) {
+        return (
+            song?.thumbnail
+            || ""
+        );
+    }
+
+
+    function renderQueue(queue) {
+        state.queue = Array.isArray(queue)
+            ? queue
+            : [];
+
+        const list = document.getElementById(
+            "queue-list"
+        );
+
+        const count = document.getElementById(
+            "queue-count"
+        );
+
+        count.textContent =
+            state.queue.length === 1
+                ? "1 utwór"
+                : state.queue.length + " utworów";
+
+        if (!state.queue.length) {
+            list.innerHTML = `
+                <div class="empty">
+                    Kolejka jest pusta.
+                </div>
+            `;
+
+            renderMySongs();
+
+            return;
+        }
+
+        list.innerHTML = state.queue
+            .map((song, index) => {
+                const title = escapeHtml(
+                    song?.title || "Nieznany utwór"
+                );
+
+                const artist = escapeHtml(
+                    song?.artist || ""
+                );
+
+                const addedBy = escapeHtml(
+                    song?.addedBy || "—"
+                );
+
+                const thumbnail = escapeHtml(
+                    getThumbnail(song)
+                );
+
+                const thumbHtml = thumbnail
+                    ? `
+                        <img
+                            src="${thumbnail}"
+                            alt=""
+                        >
+                    `
+                    : "♪";
+
+                return `
+                    <div class="queue-item">
+
+                        <div class="queue-number">
+                            #${index + 1}
+                        </div>
+
+                        <div class="queue-thumb">
+                            ${thumbHtml}
+                        </div>
+
+                        <div class="queue-info">
+
+                            <div>
+                                <div class="queue-title">
+                                    ${title}
+                                </div>
+
+                                ${
+                                    artist
+                                        ? `
+                                            <div class="queue-artist">
+                                                ${artist}
+                                            </div>
+                                        `
+                                        : ""
+                                }
+
+                                <div class="queue-added-by">
+                                    Dodane przez: ${addedBy}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+            })
+            .join("");
+
+        renderMySongs();
+    }
+
+
+    function renderMySongs() {
+        const input = document.getElementById(
+            "viewer-username"
+        );
+
+        const list = document.getElementById(
+            "my-songs-list"
+        );
+
+        const username = normalizeUsername(
+            input.value
+        );
+
+        if (!username) {
+            list.innerHTML = `
+                <div class="empty">
+                    Wpisz swój nick powyżej.
+                </div>
+            `;
+
+            return;
+        }
+
+        const matches = [];
+
+        state.queue.forEach(
+            (song, index) => {
+                const addedBy = normalizeUsername(
+                    song?.addedBy
+                );
+
+                if (addedBy === username) {
+                    matches.push({
+                        song,
+                        position: index + 1
+                    });
+                }
+            }
+        );
+
+        if (!matches.length) {
+            list.innerHTML = `
+                <div class="empty">
+                    Nie masz teraz żadnych utworów
+                    w kolejce.
+                </div>
+            `;
+
+            return;
+        }
+
+        list.innerHTML = matches
+            .map(({ song, position }) => {
+                const title = escapeHtml(
+                    song?.title || "Nieznany utwór"
+                );
+
+                let waitText = "";
+
+                if (position === 1) {
+                    waitText =
+                        "Twój utwór jest następny.";
+                } else if (position === 2) {
+                    waitText =
+                        "1 utwór przed Twoim.";
+                } else {
+                    waitText =
+                        (position - 1)
+                        + " utwory przed Twoim.";
+                }
+
+                return `
+                    <div class="my-song-item">
+
+                        <div class="my-song-position">
+                            #${position}
+                        </div>
+
+                        <div class="my-song-info">
+
+                            <div class="my-song-title">
+                                ${title}
+                            </div>
+
+                            <div class="my-song-wait">
+                                ${waitText}
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+            })
+            .join("");
+    }
+
+
+    function renderPlayerPosition() {
+        const player = state.player;
+
+        const progressBar = document.getElementById(
+            "player-progress-bar"
+        );
+
+        const currentTime = document.getElementById(
+            "player-current-time"
+        );
+
+        const duration = document.getElementById(
+            "player-duration"
+        );
+
+        if (!player.song) {
+            progressBar.style.width = "0%";
+            currentTime.textContent = "0:00";
+            duration.textContent = "0:00";
+
+            return;
+        }
+
+        let currentPosition =
+            player.syncedPosition;
+
+        if (
+            player.playing
+            && !player.paused
+            && player.syncedAt > 0
+        ) {
+            const elapsedSeconds =
+                (
+                    performance.now()
+                    - player.syncedAt
+                )
+                / 1000;
+
+            currentPosition +=
+                elapsedSeconds;
+        }
+
+        if (
+            Number.isFinite(player.duration)
+            && player.duration > 0
+        ) {
+            currentPosition = Math.min(
+                currentPosition,
+                player.duration
+            );
+        }
+
+        currentPosition = Math.max(
+            0,
+            currentPosition
+        );
+
+        let percent = 0;
+
+        if (
+            Number.isFinite(player.duration)
+            && player.duration > 0
+        ) {
+            percent =
+                (
+                    currentPosition
+                    / player.duration
+                )
+                * 100;
+        }
+
+        percent = Math.max(
+            0,
+            Math.min(
+                100,
+                percent
+            )
+        );
+
+        progressBar.style.width =
+            percent + "%";
+
+        currentTime.textContent =
+            formatTime(currentPosition);
+
+        duration.textContent =
+            formatTime(player.duration);
+    }
+
+
+    function renderCurrent(result) {
+        const title = document.getElementById(
+            "player-title"
+        );
+
+        const addedBy = document.getElementById(
+            "player-added-by"
+        );
+
+        const thumbnail = document.getElementById(
+            "player-thumbnail"
+        );
+
+        const song =
+            result?.song
+            || null;
+
+        if (!song) {
+            state.player.song = null;
+            state.player.position = 0;
+            state.player.duration = 0;
+            state.player.playing = false;
+            state.player.paused = false;
+            state.player.syncedPosition = 0;
+            state.player.syncedAt = 0;
+
+            title.textContent =
+                "Brak utworu";
+
+            addedBy.textContent =
+                "—";
+
+            thumbnail.src = "";
+            thumbnail.style.display = "none";
+
+            renderPlayerPosition();
+
+            return;
+        }
+
+        const position = Number(
+            result?.position
+            ?? 0
+        );
+
+        const duration = Number(
+            result?.duration
+            ?? song?.duration
+            ?? 0
+        );
+
+        state.player.song =
+            song;
+
+        state.player.position =
+            Number.isFinite(position)
+                ? position
+                : 0;
+
+        state.player.duration =
+            Number.isFinite(duration)
+                ? duration
+                : 0;
+
+        state.player.playing =
+            result?.playing === true;
+
+        state.player.paused =
+            result?.paused === true;
+
+        state.player.syncedPosition =
+            state.player.position;
+
+        state.player.syncedAt =
+            performance.now();
+
+        title.textContent =
+            song.title
+            || "Nieznany utwór";
+
+        addedBy.textContent =
+            song.addedBy
+            || song.added_by
+            || "—";
+
+        const thumb =
+            getThumbnail(song);
+
+        if (thumb) {
+            thumbnail.src =
+                thumb;
+
+            thumbnail.style.display =
+                "block";
+        } else {
+            thumbnail.src = "";
+            thumbnail.style.display = "none";
+        }
+
+        renderPlayerPosition();
+    }
+
+
+    function renderVoteSkip(result) {
+        const count = document.getElementById(
+            "voteskip-count"
+        );
+
+        const required = document.getElementById(
+            "voteskip-required"
+        );
+
+        const stateText = document.getElementById(
+            "voteskip-state"
+        );
+
+        const votes =
+            result?.votes
+            ?? [];
+
+        const voteCount =
+            Array.isArray(votes)
+                ? votes.length
+                : Number(votes) || 0;
+
+        const threshold = Number(
+            result?.threshold
+            ?? 0
+        );
+
+        const enabled =
+            result?.enabled
+            ?? true;
+
+        count.textContent =
+            String(voteCount);
+
+        required.textContent =
+            String(threshold);
+
+        if (!enabled) {
+            stateText.textContent =
+                "Vote Skip jest obecnie wyłączony.";
+
+            return;
+        }
+
+        stateText.innerHTML =
+            'Wpisz <code>!voteskip</code> na czacie, aby zagłosować za pominięciem utworu.';
+    }
+
+
+    async function loadQueue() {
+        try {
+            const response = await fetch(
+                "/sr/queue",
+                {
+                    cache: "no-store"
+                }
+            );
+
+            const data = await response.json();
+
+            renderQueue(
+                data?.queue || []
+            );
+        } catch (error) {
+            console.error(
+                "Queue error:",
+                error
+            );
+        }
+    }
+
+
+    async function loadCurrent() {
+        try {
+            const response = await fetch(
+                "/sr/current",
+                {
+                    cache: "no-store"
+                }
+            );
+
+            const data = await response.json();
+
+            renderCurrent(data);
+        } catch (error) {
+            console.error(
+                "Current song error:",
+                error
+            );
+        }
+    }
+
+
+    async function loadVoteSkip() {
+        try {
+            const response = await fetch(
+                "/sr/voteskip",
+                {
+                    cache: "no-store"
+                }
+            );
+
+            const data = await response.json();
+
+            renderVoteSkip(data);
+        } catch (error) {
+            console.error(
+                "Vote Skip error:",
+                error
+            );
+        }
+    }
+
+
+    async function refreshViewer() {
+        await Promise.all([
+            loadQueue(),
+            loadCurrent(),
+            loadVoteSkip()
+        ]);
+    }
+
+
+    const usernameInput = document.getElementById(
+        "viewer-username"
+    );
+
+    const savedUsername =
+        localStorage.getItem(
+            "bakuRequestViewerUsername"
+        );
+
+    if (savedUsername) {
+        usernameInput.value =
+            savedUsername;
+    }
+
+    usernameInput.addEventListener(
+        "input",
+        () => {
+            const value =
+                usernameInput.value.trim();
+
+            localStorage.setItem(
+                "bakuRequestViewerUsername",
+                value
+            );
+
+            renderMySongs();
+        }
+    );
+
+
+    refreshViewer();
+
+
+    setInterval(
+        refreshViewer,
+        3000
+    );
+
+
+    setInterval(
+        renderPlayerPosition,
+        250
+    );
+</script>
+
+</body>
+</html>

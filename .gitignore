@@ -1,0 +1,49 @@
+# ==========================================
+# BakuRequest - Git ignore
+# ==========================================
+
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Downloaded music / audio cache
+music/
+*.mp3
+*.m4a
+*.webm
+*.opus
+*.wav
+*.ogg
+
+# Runtime data
+queue.json
+active_users.json
+moderation.json
+voteskip.json
+library.json
+
+# Local backups
+*.backup
+*.bak
+*.tmp
+*~
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log

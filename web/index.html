@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BakuRequest — Panel streamera</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/main.css"
+    >
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <div class="topbar">
+
+        <a
+            class="logo"
+            href="/"
+            style="text-decoration: none;"
+        >
+            Baku<span>Request</span>
+        </a>
+
+
+        <div
+            id="connection-status"
+            class="status offline"
+        >
+            <div class="status-dot"></div>
+
+            <span>
+                System offline
+            </span>
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
+
+    <div class="content">
+
+        <div class="grid">
+
+
+            <!-- =================================================
+                 LEWA KOLUMNA
+            ================================================== -->
+
+            <div class="column">
+
+
+                <!-- =============================================
+                     PLAYER
+                ============================================== -->
+
+                <div class="card">
+
+                    <h2>
+                        Aktualnie odtwarzane
+                    </h2>
+
+
+                    <div class="player">
+
+                        <div class="cover">
+
+                            <img
+                                id="player-thumbnail"
+                                alt=""
+                            >
+
+                            <div class="cover-placeholder">
+                                ♪
+                            </div>
+
+                        </div>
+
+
+                        <div class="song-info">
+
+                            <h1 id="player-title">
+                                Nic nie gra
+                            </h1>
+
+
+                            <p>
+                                Dodane przez:
+
+                                <strong id="player-added-by">
+                                    —
+                                </strong>
+                            </p>
+
+
+                            <div class="progress">
+
+                                <div
+                                    id="player-progress-bar"
+                                    class="progress-bar"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="time">
+
+                                <span id="player-current-time">
+                                    0:00
+                                </span>
+
+                                <span id="player-duration">
+                                    0:00
+                                </span>
+
+                            </div>
+
+
+                            <div class="player-controls-row">
+
+                                <div class="player-controls">
+
+                                    <button
+                                        id="player-previous"
+                                        class="control-button"
+                                        type="button"
+                                    >
+                                        Previous
+                                    </button>
+
+
+                                    <button
+                                        id="player-play-pause"
+                                        class="control-button primary"
+                                        type="button"
+                                    >
+                                        ▶ Play / Pause
+                                    </button>
+
+
+                                    <button
+                                        id="player-skip"
+                                        class="control-button"
+                                        type="button"
+                                    >
+                                        Skip
+                                    </button>
+
+
+                                    <button
+                                        id="player-play"
+                                        class="compatibility-control"
+                                        type="button"
+                                        aria-hidden="true"
+                                        tabindex="-1"
+                                    >
+                                        Play
+                                    </button>
+
+
+                                    <button
+                                        id="player-pause"
+                                        class="compatibility-control"
+                                        type="button"
+                                        aria-hidden="true"
+                                        tabindex="-1"
+                                    >
+                                        Pause
+                                    </button>
+
+                                </div>
+
+
+                                <div class="player-admin-controls">
+
+                                    <button
+                                        id="clear-queue-button"
+                                        class="danger-control-button"
+                                        type="button"
+                                    >
+                                        Wyczyść kolejkę
+                                    </button>
+
+
+                                    <div class="voteskip-inline">
+
+                                        <span class="voteskip-inline-label">
+                                            Vote Skip
+                                        </span>
+
+
+                                        <label class="switch">
+
+                                            <input
+                                                id="voteskip-enabled"
+                                                type="checkbox"
+                                                checked
+                                            >
+
+                                            <span class="slider"></span>
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                id="player-message"
+                                class="player-message"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <br>
+
+
+                <!-- =============================================
+                     KOLEJKA
+                ============================================== -->
+
+                <div class="card">
+
+                    <div class="card-title">
+
+                        <h2>
+                            Kolejka
+                        </h2>
+
+
+                        <span class="queue-count-label">
+
+                            <span id="queue-count">
+                                0
+                            </span>
+
+                            utworów
+
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="queue-list"
+                        class="queue-list"
+                    >
+
+                        <div class="empty">
+                            Kolejka jest pusta.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PRAWA KOLUMNA
+            ================================================== -->
+
+            <div class="column">
+
+
+                <!-- =============================================
+                     MODERACJA UŻYTKOWNIKÓW
+                ============================================== -->
+
+                <div class="card">
+
+                    <div class="card-title">
+
+                        <h2>
+                            Moderacja użytkowników
+                        </h2>
+
+                    </div>
+
+
+                    <input
+                        id="active-users-search"
+                        class="input active-users-search"
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Szukaj użytkownika..."
+                    >
+
+
+                    <div
+                        id="active-users-list"
+                        class="users-list"
+                    >
+
+                        <div class="empty">
+                            Brak aktywnych użytkowników.
+                        </div>
+
+                    </div>
+
+
+                    <div class="manage-buttons-row">
+
+                        <button
+                            id="manage-bans-button"
+                            class="manage-button"
+                            type="button"
+                        >
+                            Zarządzaj banami
+                        </button>
+
+
+                        <button
+                            id="sr-settings-button"
+                            class="manage-button"
+                            type="button"
+                        >
+                            Ustawienia SR
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <br>
+
+
+                <!-- =============================================
+                     KOMENDY
+                ============================================== -->
+
+                <div class="card">
+
+                    <h2>
+                        Komendy
+                    </h2>
+
+
+                    <div class="command">
+
+                        <code>
+                            !sr
+                        </code>
+
+                        <span>
+                            Dodaj utwór do kolejki
+                        </span>
+
+                    </div>
+
+
+                    <div class="command">
+
+                        <code>
+                            !ws
+                        </code>
+
+                        <span>
+                            Usuń swój ostatni utwór z kolejki
+                        </span>
+
+                    </div>
+
+
+                    <div class="command">
+
+                        <code>
+                            !play
+                        </code>
+
+                        <span>
+                            Odtwórz / kontynuuj
+                        </span>
+
+                    </div>
+
+
+                    <div class="command">
+
+                        <code>
+                            !pause
+                        </code>
+
+                        <span>
+                            Pauza
+                        </span>
+
+                    </div>
+
+
+                    <div class="command">
+
+                        <code>
+                            !skip
+                        </code>
+
+                        <span>
+                            Pomiń utwór
+                        </span>
+
+                    </div>
+
+
+                    <div class="command">
+
+                        <code>
+                            !song
+                        </code>
+
+                        <span>
+                            Aktualny utwór
+                        </span>
+
+                    </div>
+
+
+                    <div class="command">
+
+                        <code>
+                            !voteskip
+                        </code>
+
+                        <span>
+                            Głosowanie
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="global-message"
+            class="global-message"
+        ></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL TIMEOUT UŻYTKOWNIKA
+========================================================= -->
+
+<div
+    id="timeout-modal"
+    class="modal-overlay"
+>
+
+    <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="timeout-modal-title"
+    >
+
+
+        <div class="modal-header">
+
+            <h2 id="timeout-modal-title">
+                Timeout użytkownika
+            </h2>
+
+
+            <button
+                id="timeout-modal-close"
+                class="modal-close"
+                type="button"
+                aria-label="Zamknij"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+
+            <div class="selected-user">
+
+                <div
+                    id="timeout-user-avatar"
+                    class="user-avatar"
+                >
+                    U
+                </div>
+
+
+                <div>
+
+                    <strong id="timeout-user-name">
+                        Username
+                    </strong>
+
+                    <span>
+                        Użytkownik
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <label
+                class="input-label"
+                for="moderation-reason"
+            >
+                Powód
+            </label>
+
+
+            <input
+                id="moderation-reason"
+                class="input"
+                type="text"
+                autocomplete="off"
+                placeholder="Opcjonalny powód"
+            >
+
+
+            <div class="modal-field-gap"></div>
+
+
+            <label class="input-label">
+                Czas timeoutu
+            </label>
+
+
+            <div class="timeout-options">
+
+                <button
+                    class="timeout-option"
+                    type="button"
+                    data-minutes="1"
+                >
+                    1 minuta
+                </button>
+
+
+                <button
+                    class="timeout-option"
+                    type="button"
+                    data-minutes="5"
+                >
+                    5 minut
+                </button>
+
+
+                <button
+                    class="timeout-option"
+                    type="button"
+                    data-minutes="10"
+                >
+                    10 minut
+                </button>
+
+
+                <button
+                    class="timeout-option"
+                    type="button"
+                    data-minutes="30"
+                >
+                    30 minut
+                </button>
+
+
+                <button
+                    class="timeout-option"
+                    type="button"
+                    data-minutes="60"
+                >
+                    1 godzina
+                </button>
+
+
+                <button
+                    class="timeout-option"
+                    type="button"
+                    data-minutes="1440"
+                >
+                    24 godziny
+                </button>
+
+            </div>
+
+
+
+            <input
+                id="moderation-user-id"
+                class="compatibility-control"
+                type="text"
+                tabindex="-1"
+                aria-hidden="true"
+            >
+
+
+            <select
+                id="moderation-duration"
+                class="compatibility-control"
+                tabindex="-1"
+                aria-hidden="true"
+            >
+
+                <option value="1">
+                    1
+                </option>
+
+                <option value="5">
+                    5
+                </option>
+
+                <option value="10">
+                    10
+                </option>
+
+                <option value="30">
+                    30
+                </option>
+
+                <option value="60">
+                    60
+                </option>
+
+                <option value="1440">
+                    1440
+                </option>
+
+            </select>
+
+
+            <button
+                id="timeout-user-button"
+                class="compatibility-control"
+                type="button"
+                tabindex="-1"
+                aria-hidden="true"
+            >
+                Timeout
+            </button>
+
+
+            <button
+                id="ban-user-button"
+                class="compatibility-control"
+                type="button"
+                tabindex="-1"
+                aria-hidden="true"
+            >
+                Ban
+            </button>
+
+
+
+            <div class="ban-divider"></div>
+
+
+            <button
+                id="timeout-ban-user-button"
+                class="ban-user-button"
+                type="button"
+            >
+                ⛔ Ban użytkownika
+            </button>
+
+
+            <p class="ban-warning">
+                Ban uniemożliwi temu użytkownikowi
+                korzystanie z systemu BakuRequest.
+            </p>
+
+
+            <div
+                id="moderation-message"
+                class="form-message"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL ZARZĄDZAJ BANAMI
+========================================================= -->
+
+<div
+    id="bans-modal"
+    class="modal-overlay"
+>
+
+    <div
+        class="modal large"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="bans-modal-title"
+    >
+
+
+        <div class="modal-header">
+
+            <h2 id="bans-modal-title">
+                Zarządzaj banami
+            </h2>
+
+
+            <button
+                id="bans-modal-close"
+                class="modal-close"
+                type="button"
+                aria-label="Zamknij"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+
+        <div class="modal-body">
+
+
+            <div
+                class="tabs"
+                role="tablist"
+            >
+
+                <button
+                    id="ban-tab-users"
+                    class="tab active"
+                    type="button"
+                    data-tab="users"
+                >
+                    Zbanowani użytkownicy
+                </button>
+
+
+                <button
+                    id="ban-tab-timeouts"
+                    class="tab"
+                    type="button"
+                    data-tab="timeouts"
+                >
+                    Timeouty
+                </button>
+
+
+                <button
+                    id="ban-tab-songs"
+                    class="tab"
+                    type="button"
+                    data-tab="songs"
+                >
+                    Zbanowane utwory
+                </button>
+
+            </div>
+
+
+
+            <section
+                id="ban-panel-users"
+                class="ban-tab-panel active"
+            >
+
+                <input
+                    id="banned-users-search"
+                    class="input ban-search"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Szukaj zbanowanego użytkownika..."
+                >
+
+
+                <div
+                    id="banned-users-list"
+                    class="ban-list"
+                >
+
+                    <div class="empty">
+                        Brak zbanowanych użytkowników.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <section
+                id="ban-panel-timeouts"
+                class="ban-tab-panel"
+            >
+
+                <input
+                    id="timeouts-search"
+                    class="input ban-search"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Szukaj użytkownika z timeoutem..."
+                >
+
+
+                <div
+                    id="timeouts-list"
+                    class="ban-list"
+                >
+
+                    <div class="empty">
+                        Brak aktywnych timeoutów.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <section
+                id="ban-panel-songs"
+                class="ban-tab-panel"
+            >
+
+                <input
+                    id="banned-songs-search"
+                    class="input ban-search"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Szukaj zbanowanego utworu..."
+                >
+
+
+                <div
+                    id="banned-songs-list"
+                    class="ban-list"
+                >
+
+                    <div class="empty">
+                        Brak zbanowanych utworów.
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL USTAWIENIA SR
+========================================================= -->
+
+<div
+    id="sr-settings-modal"
+    class="modal-overlay"
+>
+
+    <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="sr-settings-modal-title"
+    >
+
+
+        <div class="modal-header">
+
+            <h2 id="sr-settings-modal-title">
+                Ustawienia Song Request
+            </h2>
+
+
+            <button
+                id="sr-settings-modal-close"
+                class="modal-close"
+                type="button"
+                aria-label="Zamknij"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+
+            <label
+                class="input-label"
+                for="sr-max-song-length"
+            >
+                Maksymalna długość utworu
+            </label>
+
+
+            <div class="settings-input-row">
+
+                <input
+                    id="sr-max-song-length"
+                    class="input"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value="10"
+                >
+
+                <span class="settings-unit">
+                    minut
+                </span>
+
+            </div>
+
+
+            <div class="modal-field-gap"></div>
+
+
+            <label
+                class="input-label"
+                for="sr-max-songs-per-user"
+            >
+                Limit utworów na użytkownika
+            </label>
+
+
+            <div class="settings-input-row">
+
+                <input
+                    id="sr-max-songs-per-user"
+                    class="input"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value="3"
+                >
+
+                <span class="settings-unit">
+                    utwory
+                </span>
+
+            </div>
+
+
+            <div class="modal-field-gap"></div>
+
+
+            <label
+                class="input-label"
+                for="sr-voteskip-threshold"
+            >
+                Wymagana liczba głosów Vote Skip
+            </label>
+
+
+            <div class="settings-input-row">
+
+                <input
+                    id="sr-voteskip-threshold"
+                    class="input"
+                    type="number"
+                    min="1"
+                    max="1000"
+                    step="1"
+                    value="3"
+                >
+
+                <span class="settings-unit">
+                    głosów
+                </span>
+
+            </div>
+
+
+            <div class="settings-actions">
+
+                <button
+                    id="sr-settings-save"
+                    class="settings-save-button"
+                    type="button"
+                >
+                    Zapisz ustawienia
+                </button>
+
+            </div>
+
+
+            <div
+                id="sr-settings-message"
+                class="form-message"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL POTWIERDZENIA CZYSZCZENIA KOLEJKI
+========================================================= -->
+
+<div
+    id="clear-queue-modal"
+    class="modal-overlay"
+>
+
+    <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="clear-queue-modal-title"
+    >
+
+
+        <div class="modal-header">
+
+            <h2 id="clear-queue-modal-title">
+                Wyczyścić kolejkę?
+            </h2>
+
+
+            <button
+                id="clear-queue-modal-close"
+                class="modal-close"
+                type="button"
+                aria-label="Zamknij"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <p class="clear-queue-warning">
+                Wszystkie utwory oczekujące w kolejce zostaną usunięte.
+                Aktualnie odtwarzany utwór będzie grał dalej.
+            </p>
+
+
+            <div class="clear-queue-actions">
+
+                <button
+                    id="clear-queue-cancel"
+                    class="small-button"
+                    type="button"
+                >
+                    Anuluj
+                </button>
+
+
+                <button
+                    id="clear-queue-confirm"
+                    class="danger-action-button"
+                    type="button"
+                >
+                    Wyczyść kolejkę
+                </button>
+
+            </div>
+
+
+            <div
+                id="clear-queue-message"
+                class="form-message"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     NOTIFICATION
+========================================================= -->
+
+<div
+    id="notification"
+    class="notification"
+></div>
+
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script src="/js/api.js"></script>
+<script src="/js/player.js"></script>
+<script src="/js/queue.js"></script>
+<script src="/js/voteskip.js"></script>
+<script src="/js/moderation.js"></script>
+
+</body>
+
+</html>
