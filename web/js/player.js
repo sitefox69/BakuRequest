@@ -7,11 +7,6 @@ let currentPlayerState = {
     progress: 0
 };
 
-
-/* =========================================================
-   ELEMENTY
-========================================================= */
-
 const playerTitle =
     document.getElementById("player-title");
 
@@ -44,11 +39,6 @@ const playerMessage =
 
 const connectionStatus =
     document.getElementById("connection-status");
-
-
-/* =========================================================
-   API
-========================================================= */
 
 async function playerGet(path) {
     const response = await fetch(
@@ -102,11 +92,6 @@ async function playerPost(path, body = {}) {
     return data;
 }
 
-
-/* =========================================================
-   CONNECTION STATUS
-========================================================= */
-
 function setConnectionStatus(online) {
     if (!connectionStatus) {
         return;
@@ -148,11 +133,6 @@ function setConnectionStatus(online) {
     }
 }
 
-
-/* =========================================================
-   FORMATOWANIE CZASU
-========================================================= */
-
 function formatPlayerTime(seconds) {
     const safeSeconds =
         Number.isFinite(Number(seconds))
@@ -185,11 +165,6 @@ function formatPlayerTime(seconds) {
     );
 }
 
-
-/* =========================================================
-   PROGRESS
-========================================================= */
-
 function clampProgress(value) {
     const number =
         Number(value);
@@ -207,11 +182,6 @@ function clampProgress(value) {
     );
 }
 
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
 function setPlayerMessage(
     message,
     isError = false
@@ -228,11 +198,6 @@ function setPlayerMessage(
             ? "true"
             : "false";
 }
-
-
-/* =========================================================
-   THUMBNAIL
-========================================================= */
 
 function setPlayerThumbnail(song) {
     if (!playerThumbnail) {
@@ -285,11 +250,6 @@ if (playerThumbnail) {
         }
     );
 }
-
-
-/* =========================================================
-   SONG URL
-========================================================= */
 
 function getPlayerSongUrl(song) {
     if (
@@ -357,11 +317,6 @@ function renderPlayerTitle(song) {
     playerTitle.style.cursor =
         "";
 
-    /*
-        Nie zmieniamy koloru ani wyglądu tytułu.
-        Jedyną wizualną zmianą jest kursor po najechaniu.
-    */
-
     if (!songUrl) {
         return;
     }
@@ -428,11 +383,6 @@ if (playerTitle) {
         }
     );
 }
-
-
-/* =========================================================
-   ADDED BY / MODERATION
-========================================================= */
 
 function getPlayerAddedBy(song) {
     if (
@@ -575,11 +525,6 @@ if (playerAddedBy) {
     );
 }
 
-
-/* =========================================================
-   PLAY / PAUSE BUTTON
-========================================================= */
-
 function renderPlayPauseButton() {
     if (!playerPlayPauseButton) {
         return;
@@ -606,11 +551,6 @@ function renderPlayPauseButton() {
         "active"
     );
 }
-
-
-/* =========================================================
-   RENDER PLAYER
-========================================================= */
 
 function renderPlayer() {
     const song =
@@ -684,11 +624,6 @@ function renderPlayer() {
     renderPlayPauseButton();
 }
 
-
-/* =========================================================
-   REFRESH
-========================================================= */
-
 async function refreshPlayer() {
     try {
         const data =
@@ -749,11 +684,6 @@ async function refreshPlayer() {
         renderPlayer();
     }
 }
-
-
-/* =========================================================
-   PREVIOUS
-========================================================= */
 
 async function previousPlayer() {
     if (
@@ -818,11 +748,6 @@ async function previousPlayer() {
     }
 }
 
-
-/* =========================================================
-   PLAY / PAUSE ACTION
-========================================================= */
-
 async function togglePlayPause() {
     if (
         !currentPlayerState.song
@@ -846,11 +771,6 @@ async function togglePlayPause() {
 
     await resumePlayer();
 }
-
-
-/* =========================================================
-   PAUSE
-========================================================= */
 
 async function pausePlayer() {
     if (playerPlayPauseButton) {
@@ -901,11 +821,6 @@ async function pausePlayer() {
     }
 }
 
-
-/* =========================================================
-   RESUME / PLAY
-========================================================= */
-
 async function resumePlayer() {
     if (playerPlayPauseButton) {
         playerPlayPauseButton.disabled =
@@ -954,11 +869,6 @@ async function resumePlayer() {
         }
     }
 }
-
-
-/* =========================================================
-   SKIP
-========================================================= */
 
 async function skipPlayer() {
     if (playerSkipButton) {
@@ -1009,11 +919,6 @@ async function skipPlayer() {
     }
 }
 
-
-/* =========================================================
-   EVENTS
-========================================================= */
-
 if (playerPreviousButton) {
     playerPreviousButton.addEventListener(
         "click",
@@ -1036,11 +941,6 @@ if (playerSkipButton) {
         skipPlayer
     );
 }
-
-
-/* =========================================================
-   START
-========================================================= */
 
 refreshPlayer();
 
