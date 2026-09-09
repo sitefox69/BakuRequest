@@ -7,11 +7,6 @@ const moderationState = {
     selectedTimeoutMinutes: 10
 };
 
-
-// ============================================================
-// ELEMENTS
-// ============================================================
-
 const manageBansButton =
     document.getElementById(
         "manage-bans-button"
@@ -101,11 +96,6 @@ const activeUsersList =
         "active-users-list"
     );
 
-
-// ============================================================
-// TIMEOUT MODAL ELEMENTS
-// ============================================================
-
 const timeoutModal =
     document.getElementById(
         "timeout-modal"
@@ -158,22 +148,12 @@ const timeoutOptions =
         )
     );
 
-
-// ============================================================
-// NOTIFICATION
-// ============================================================
-
 const notification =
     document.getElementById(
         "notification"
     );
 
 let notificationTimer = null;
-
-
-// ============================================================
-// API
-// ============================================================
 
 async function moderationGet(path) {
     const response =
@@ -245,11 +225,6 @@ async function moderationPost(
     return data;
 }
 
-
-// ============================================================
-// NOTIFICATION
-// ============================================================
-
 function showNotification(
     message,
     error = false
@@ -287,11 +262,6 @@ function showNotification(
         );
 }
 
-
-// ============================================================
-// MODERATION MESSAGE
-// ============================================================
-
 function setModerationMessage(
     message,
     error = false
@@ -308,11 +278,6 @@ function setModerationMessage(
             ? "true"
             : "false";
 }
-
-
-// ============================================================
-// HELPERS
-// ============================================================
 
 function normalizeText(value) {
     return String(
@@ -531,11 +496,6 @@ function isUserModerated(userId) {
     return timedOut;
 }
 
-
-// ============================================================
-// NORMALIZE BACKEND DATA
-// ============================================================
-
 function applyModerationData(data) {
     const source =
         data || {};
@@ -564,11 +524,6 @@ function applyModerationData(data) {
             ? source.bannedSongs
             : [];
 }
-
-
-// ============================================================
-// RENDER BANNED USERS
-// ============================================================
 
 function renderBannedUsers() {
     if (!bannedUsersList) {
@@ -689,11 +644,6 @@ function renderBannedUsers() {
         }
     );
 }
-
-
-// ============================================================
-// RENDER TIMEOUTS
-// ============================================================
 
 function renderTimeouts() {
     if (!timeoutsList) {
@@ -829,11 +779,6 @@ function renderTimeouts() {
     );
 }
 
-
-// ============================================================
-// RENDER BANNED SONGS
-// ============================================================
-
 function renderBannedSongs() {
     if (!bannedSongsList) {
         return;
@@ -953,11 +898,6 @@ function renderBannedSongs() {
         }
     );
 }
-
-
-// ============================================================
-// RENDER ACTIVE USERS
-// ============================================================
 
 function renderActiveUsers() {
     if (!activeUsersList) {
@@ -1149,11 +1089,6 @@ function renderActiveUsers() {
     );
 }
 
-
-// ============================================================
-// REFRESH
-// ============================================================
-
 async function refreshModeration() {
     try {
         const results =
@@ -1207,11 +1142,6 @@ async function refreshModeration() {
     }
 }
 
-
-// ============================================================
-// UNBAN USER
-// ============================================================
-
 async function unbanUser(
     userId
 ) {
@@ -1248,11 +1178,6 @@ async function unbanUser(
         );
     }
 }
-
-
-// ============================================================
-// REMOVE TIMEOUT
-// ============================================================
 
 async function removeTimeout(
     userId
@@ -1291,11 +1216,6 @@ async function removeTimeout(
     }
 }
 
-
-// ============================================================
-// UNBAN SONG
-// ============================================================
-
 async function unbanSong(
     songId
 ) {
@@ -1333,11 +1253,6 @@ async function unbanSong(
     }
 }
 
-
-// ============================================================
-// OPEN / CLOSE BANS
-// ============================================================
-
 function openBansModal() {
     if (!bansModal) {
         return;
@@ -1366,11 +1281,6 @@ function closeBansModal() {
     document.body.style.overflow =
         "";
 }
-
-
-// ============================================================
-// TABS
-// ============================================================
 
 function switchBanTab(tabName) {
     const tabs = {
@@ -1421,11 +1331,6 @@ function switchBanTab(tabName) {
         }
     );
 }
-
-
-// ============================================================
-// TIMEOUT MODAL
-// ============================================================
 
 function openTimeoutModal(user) {
     if (!timeoutModal) {
@@ -1538,11 +1443,6 @@ function closeTimeoutModal() {
     );
 }
 
-
-// ============================================================
-// APPLY TIMEOUT
-// ============================================================
-
 async function applyTimeout(
     minutes
 ) {
@@ -1622,11 +1522,6 @@ async function applyTimeout(
         );
     }
 }
-
-
-// ============================================================
-// BAN USER
-// ============================================================
 
 async function banSelectedUser() {
     const user =
@@ -1716,11 +1611,6 @@ async function banSelectedUser() {
     }
 }
 
-
-// ============================================================
-// EVENTS — BANS MODAL
-// ============================================================
-
 if (manageBansButton) {
     manageBansButton.addEventListener(
         "click",
@@ -1750,11 +1640,6 @@ if (bansModal) {
         }
     );
 }
-
-
-// ============================================================
-// EVENTS — TABS
-// ============================================================
 
 if (banTabUsers) {
     banTabUsers.addEventListener(
@@ -1791,11 +1676,6 @@ if (banTabSongs) {
     );
 }
 
-
-// ============================================================
-// EVENTS — SEARCH
-// ============================================================
-
 if (bannedUsersSearch) {
     bannedUsersSearch.addEventListener(
         "input",
@@ -1826,11 +1706,6 @@ if (activeUsersSearch) {
         renderActiveUsers
     );
 }
-
-
-// ============================================================
-// EVENTS — TIMEOUT
-// ============================================================
 
 if (timeoutModalClose) {
     timeoutModalClose.addEventListener(
@@ -1912,11 +1787,6 @@ if (timeoutBanUserButton) {
     );
 }
 
-
-// ============================================================
-// ESC
-// ============================================================
-
 document.addEventListener(
     "keydown",
     function (event) {
@@ -1949,11 +1819,6 @@ document.addEventListener(
         }
     }
 );
-
-
-// ============================================================
-// INITIALIZE
-// ============================================================
 
 switchBanTab(
     "users"
