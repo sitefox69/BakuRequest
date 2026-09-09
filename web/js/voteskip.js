@@ -2,11 +2,6 @@ let voteSkipRefreshTimer = null;
 let voteSkipSaving = false;
 let lastValidVoteSkipThreshold = 3;
 
-
-// ============================================================
-// ELEMENTS
-// ============================================================
-
 const voteSkipEnabledElement =
     document.getElementById(
         "voteskip-enabled"
@@ -51,11 +46,6 @@ const srSettingsMessage =
     document.getElementById(
         "sr-settings-message"
     );
-
-
-// ============================================================
-// API
-// ============================================================
 
 async function voteSkipGet(path) {
     const response =
@@ -127,11 +117,6 @@ async function voteSkipPost(
     return data;
 }
 
-
-// ============================================================
-// CONNECTION
-// ============================================================
-
 function setVoteSkipConnectionStatus(
     online
 ) {
@@ -144,11 +129,6 @@ function setVoteSkipConnectionStatus(
         );
     }
 }
-
-
-// ============================================================
-// SETTINGS MESSAGE
-// ============================================================
 
 function setSrSettingsMessage(
     message,
@@ -166,11 +146,6 @@ function setSrSettingsMessage(
             ? "true"
             : "false";
 }
-
-
-// ============================================================
-// RENDER VOTE SKIP
-// ============================================================
 
 function renderVoteSkip(data) {
     const required =
@@ -212,11 +187,6 @@ function renderVoteSkip(data) {
     }
 }
 
-
-// ============================================================
-// REFRESH VOTE SKIP
-// ============================================================
-
 async function refreshVoteSkip() {
     if (voteSkipSaving) {
         return;
@@ -247,11 +217,6 @@ async function refreshVoteSkip() {
         );
     }
 }
-
-
-// ============================================================
-// ENABLE / DISABLE
-// ============================================================
 
 async function saveVoteSkipEnabled() {
     if (!voteSkipEnabledElement) {
@@ -314,11 +279,6 @@ async function saveVoteSkipEnabled() {
         await refreshVoteSkip();
     }
 }
-
-
-// ============================================================
-// OPEN SETTINGS
-// ============================================================
 
 async function openSrSettingsModal() {
     if (!srSettingsModal) {
@@ -457,11 +417,6 @@ async function openSrSettingsModal() {
     }
 }
 
-
-// ============================================================
-// CLOSE SETTINGS
-// ============================================================
-
 function closeSrSettingsModal() {
     if (
         !srSettingsModal ||
@@ -484,11 +439,6 @@ function closeSrSettingsModal() {
         ""
     );
 }
-
-
-// ============================================================
-// VALIDATE SETTINGS
-// ============================================================
 
 function getSrSettingsValues() {
     if (
@@ -563,11 +513,6 @@ function getSrSettingsValues() {
             voteThreshold
     };
 }
-
-
-// ============================================================
-// SAVE SETTINGS
-// ============================================================
 
 async function saveSrSettings() {
     if (voteSkipSaving) {
@@ -780,22 +725,12 @@ async function saveSrSettings() {
     }
 }
 
-
-// ============================================================
-// EVENTS — VOTE SKIP
-// ============================================================
-
 if (voteSkipEnabledElement) {
     voteSkipEnabledElement.addEventListener(
         "change",
         saveVoteSkipEnabled
     );
 }
-
-
-// ============================================================
-// EVENTS — SETTINGS
-// ============================================================
 
 if (srSettingsButton) {
     srSettingsButton.addEventListener(
@@ -835,11 +770,6 @@ if (srSettingsModal) {
     );
 }
 
-
-// ============================================================
-// ENTER IN SETTINGS
-// ============================================================
-
 [
     srMaxSongLengthElement,
     srMaxSongsPerUserElement,
@@ -868,11 +798,6 @@ if (srSettingsModal) {
         }
     );
 
-
-// ============================================================
-// ESC
-// ============================================================
-
 document.addEventListener(
     "keydown",
     function (event) {
@@ -894,11 +819,6 @@ document.addEventListener(
         }
     }
 );
-
-
-// ============================================================
-// START
-// ============================================================
 
 function startVoteSkipRefresh() {
     if (voteSkipRefreshTimer) {
