@@ -29,11 +29,6 @@ async function apiRequest(path, options = {}) {
     return data;
 }
 
-
-/* =========================
-   PLAYER
-========================= */
-
 async function getCurrentSong() {
     return apiRequest("/sr/current");
 }
@@ -74,11 +69,6 @@ async function skipSong() {
     );
 }
 
-
-/* =========================
-   QUEUE
-========================= */
-
 async function getQueue() {
     return apiRequest("/sr/queue");
 }
@@ -108,11 +98,6 @@ async function removeQueueSong(songId) {
     );
 }
 
-
-/* =========================
-   VOTESKIP
-========================= */
-
 async function voteSkip(userId) {
     return apiRequest(
         "/sr/voteskip",
@@ -128,11 +113,6 @@ async function voteSkip(userId) {
 async function getVoteSkipStatus() {
     return apiRequest("/sr/voteskip");
 }
-
-
-/* =========================
-   MODERATION
-========================= */
 
 async function getModeration() {
     return apiRequest("/sr/bans");
