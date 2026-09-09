@@ -1,11 +1,6 @@
 let queueRefreshTimer = null;
 let clearQueueInProgress = false;
 
-
-// ============================================================
-// ELEMENTS
-// ============================================================
-
 const clearQueueButton =
     document.getElementById(
         "clear-queue-button"
@@ -36,11 +31,6 @@ const clearQueueMessage =
         "clear-queue-message"
     );
 
-
-// ============================================================
-// CLEAR QUEUE MESSAGE
-// ============================================================
-
 function setClearQueueMessage(
     message,
     error = false
@@ -58,11 +48,6 @@ function setClearQueueMessage(
             : "false";
 }
 
-
-// ============================================================
-// OPEN CLEAR QUEUE MODAL
-// ============================================================
-
 function openClearQueueModal() {
     if (!clearQueueModal) {
         return;
@@ -77,11 +62,6 @@ function openClearQueueModal() {
     document.body.style.overflow =
         "hidden";
 }
-
-
-// ============================================================
-// CLOSE CLEAR QUEUE MODAL
-// ============================================================
 
 function closeClearQueueModal() {
     if (
@@ -100,11 +80,6 @@ function closeClearQueueModal() {
 
     setClearQueueMessage("");
 }
-
-
-// ============================================================
-// CLEAR QUEUE API
-// ============================================================
 
 async function clearWaitingQueue() {
     if (clearQueueInProgress) {
@@ -277,11 +252,6 @@ async function clearWaitingQueue() {
     }
 }
 
-
-// ============================================================
-// REFRESH QUEUE
-// ============================================================
-
 async function refreshQueue() {
     try {
         const data =
@@ -325,11 +295,6 @@ async function refreshQueue() {
         setConnectionStatus(false);
     }
 }
-
-
-// ============================================================
-// RENDER QUEUE
-// ============================================================
 
 function renderQueue(queue) {
     const container =
@@ -382,10 +347,6 @@ function renderQueue(queue) {
             item.className =
                 "queue-item";
 
-
-            // ------------------------------------------------
-            // INFO
-            // ------------------------------------------------
 
             const info =
                 document.createElement(
@@ -478,10 +439,6 @@ function renderQueue(queue) {
             );
 
 
-            // ------------------------------------------------
-            // ACTIONS
-            // ------------------------------------------------
-
             const actions =
                 document.createElement(
                     "div"
@@ -491,10 +448,6 @@ function renderQueue(queue) {
             actions.className =
                 "queue-actions";
 
-
-            // ------------------------------------------------
-            // REMOVE
-            // ------------------------------------------------
 
             const removeButton =
                 document.createElement(
@@ -545,10 +498,6 @@ function renderQueue(queue) {
                 }
             );
 
-
-            // ------------------------------------------------
-            // BAN
-            // ------------------------------------------------
 
             const banButton =
                 document.createElement(
@@ -657,11 +606,6 @@ function renderQueue(queue) {
     );
 }
 
-
-// ============================================================
-// EVENTS — CLEAR QUEUE
-// ============================================================
-
 if (clearQueueButton) {
     clearQueueButton.addEventListener(
         "click",
@@ -708,11 +652,6 @@ if (clearQueueModal) {
     );
 }
 
-
-// ============================================================
-// ESC
-// ============================================================
-
 document.addEventListener(
     "keydown",
     function (event) {
@@ -734,11 +673,6 @@ document.addEventListener(
     }
 );
 
-
-// ============================================================
-// START QUEUE REFRESH
-// ============================================================
-
 function startQueueRefresh() {
     if (queueRefreshTimer) {
         clearInterval(
@@ -756,11 +690,6 @@ function startQueueRefresh() {
             3000
         );
 }
-
-
-// ============================================================
-// INITIALIZE
-// ============================================================
 
 if (
     document.readyState ===
